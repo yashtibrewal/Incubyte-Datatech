@@ -34,6 +34,8 @@ class StringCalculatorTest {
 		assertEquals(1383, result);
 		result = stringCalulatorObject.add("1\n2,3\n99");
 		assertEquals(105, result);
+		result = stringCalulatorObject.add("//;1;2;3");
+		assertEquals(6, result);
 	}
 	
 	@Test

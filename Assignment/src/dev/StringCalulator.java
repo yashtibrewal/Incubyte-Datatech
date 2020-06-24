@@ -1,17 +1,36 @@
 package dev;
 
+import java.util.ArrayList;
+
 public class StringCalulator {
-	char[] delimeters = {',','\n'};
+	ArrayList<Character> delimeters;
 	public StringCalulator() {
-		// TODO Auto-generated constructor stub
+		delimeters = new ArrayList(2);
+		addDefaultDelimeters();
 	}
+	
+	public void addDefaultDelimeters() {
+		delimeters.add(',');
+		delimeters.add('\n');
+	}
+	
 	public int add(String input) {
-		System.out.print("debug point");
+
+		int sum = 0;
+		
+		
 		if(input.length()==0) {
 			return 0;
 		}
 		
-		int sum = 0;
+		// handling delimiter change
+		if(input.length()>=3)
+			if(input.charAt(0)=='/' && input.charAt(1)=='/') {
+				addDelimeter(input.charAt(2));
+				input = input.substring(3);
+			}
+		
+		
 		String num = ""; //to hold 1 number at a time
 		for(int i=0;i<input.length();i++) { // processing every character
 			
@@ -34,13 +53,11 @@ public class StringCalulator {
 	}
 	
 	public boolean isDelimeter(char ch) {
-		
-		for(char delimeter:delimeters) {
-			if(ch==delimeter)
-				return true;
-		}
-		
-		return false;
+		return delimeters.contains(ch);
+	}
+	
+	public void addDelimeter(char ch) {
+		delimeters.add(ch);
 	}
 	
 }

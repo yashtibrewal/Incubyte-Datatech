@@ -42,7 +42,7 @@ class StringCalculatorTest {
 
 		stringCalulatorObject= new StringCalulator();
 		result = stringCalulatorObject.add("2,45,1234,0,0,0,0,0,1,2,99");
-		assertEquals(1383, result);
+		assertEquals(149, result);
 
 		stringCalulatorObject= new StringCalulator();
 		result = stringCalulatorObject.add("1\n2,3\n99");
@@ -67,6 +67,10 @@ class StringCalculatorTest {
 		expectedMessage = "negatives not allowed [-2, -3]";
 		actualMessage = exception.getMessage();
 		assertTrue(actualMessage.contains(expectedMessage));
+		
+		stringCalulatorObject= new StringCalulator();
+		result = stringCalulatorObject.add("1000,1,1");
+		assertEquals(1002, result);
 		
 		System.out.println("add() function was called "+stringCalulatorObject.getCalledCount()+" times");
 		

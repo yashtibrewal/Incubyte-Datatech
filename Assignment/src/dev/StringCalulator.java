@@ -21,7 +21,16 @@ public class StringCalulator {
 		delimiters.add(',');
 		delimiters.add('\n');
 	}
-
+	
+	public boolean canBeAdded(String num) {
+		// numbers above 1000 cannot be added
+		if(Integer.parseInt(num)>1000)
+			return false;
+		if(Integer.parseInt(num)<0)
+			return false;
+		return true;
+	}
+	
 	public int add(String input) throws Exception {
 		boolean hasNegatives = false;
 		int sum = 0;
@@ -51,14 +60,16 @@ public class StringCalulator {
 						hasNegatives = true;
 					checkNegative(num, true);
 				}
-				sum += Integer.parseInt(num);
+				if(canBeAdded(num))
+					sum += Integer.parseInt(num);
 				// handling negative numbers
 				num = "";
 			}
 
 			if (i == input.length() - 1) { // to add the last number
 				checkNegative(num, true);
-				sum += Integer.parseInt(num);
+				if(canBeAdded(num))
+					sum += Integer.parseInt(num);
 			}
 
 		}

@@ -3,18 +3,18 @@ package dev;
 import java.util.ArrayList;
 
 public class StringCalulator {
-	ArrayList<Character> delimeters;
+	ArrayList<Character> delimiters;
 	public StringCalulator() {
-		delimeters = new ArrayList(2);
+		delimiters = new ArrayList<Character>(2);
 		addDefaultDelimeters();
 	}
 	
 	public void addDefaultDelimeters() {
-		delimeters.add(',');
-		delimeters.add('\n');
+		delimiters.add(',');
+		delimiters.add('\n');
 	}
 	
-	public int add(String input) {
+	public int add(String input) throws Exception {
 
 		int sum = 0;
 		
@@ -27,7 +27,7 @@ public class StringCalulator {
 		if(input.length()>=3)
 			if(input.charAt(0)=='/' && input.charAt(1)=='/') {
 				addDelimeter(input.charAt(2));
-				input = input.substring(3);
+				input = input.substring(3);  // removing the "//delimiter"
 			}
 		
 		
@@ -35,11 +35,15 @@ public class StringCalulator {
 		for(int i=0;i<input.length();i++) { // processing every character
 			
 			char ch = input.charAt(i);
-			if(!isDelimeter(ch))  // checking for the delimeter
+			// checking for the delimiter
+			if(!isDelimeter(ch))  
 				num+=ch;
 			//logic to feed one number
 			if(isDelimeter(ch)) {
+				if(Integer.parseInt(num)<0)
+					throw new Exception("negatives not allowed "+num);
 				sum+=Integer.parseInt(num);
+				// handling negative numbers
 				num="";
 			}
 			
@@ -53,11 +57,11 @@ public class StringCalulator {
 	}
 	
 	public boolean isDelimeter(char ch) {
-		return delimeters.contains(ch);
+		return delimiters.contains(ch);
 	}
 	
 	public void addDelimeter(char ch) {
-		delimeters.add(ch);
+		delimiters.add(ch);
 	}
 	
 }

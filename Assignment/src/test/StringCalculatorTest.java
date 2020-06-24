@@ -19,7 +19,7 @@ class StringCalculatorTest {
 	}
 
 	@Test
-	final void testAdd() {
+	final void testAdd() throws Exception {
 		int result;
 		StringCalulator stringCalulatorObject = new StringCalulator();
 		result = stringCalulatorObject.add("");
@@ -36,6 +36,15 @@ class StringCalculatorTest {
 		assertEquals(105, result);
 		result = stringCalulatorObject.add("//;1;2;3");
 		assertEquals(6, result);
+		Exception exception = assertThrows(Exception.class, 
+				()->{
+						stringCalulatorObject.add("1,-2,3");
+					}
+		);
+	    String expectedMessage = "negatives not allowed -2";
+	    String actualMessage = exception.getMessage();
+	    assertTrue(actualMessage.contains(expectedMessage));
+		
 	}
 	
 	@Test

@@ -76,6 +76,11 @@ class StringCalculatorTest {
 		result = stringCalulatorObject.add("//[***]1***2***3");
 		assertEquals(6, result);
 		
+		stringCalulatorObject= new StringCalulator();
+		result = stringCalulatorObject.add("//[.][%]1%2.3");
+		assertEquals(6, result);
+		
+		
 		System.out.println("add() function was called "+stringCalulatorObject.getCalledCount()+" times");
 		
 	}

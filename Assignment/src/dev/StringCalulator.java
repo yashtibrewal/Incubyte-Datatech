@@ -66,9 +66,18 @@ public class StringCalulator {
 			if (input.charAt(0) == '/' && input.charAt(1) == '/') {
 				if(input.charAt(2) == '[') {
 					int end = input.lastIndexOf(']');
-					String multiCharacterDelimiter = input.substring(3,end);
-					addDelimeter(multiCharacterDelimiter);
-					input = input.substring(end+1);
+					if(input.contains("][")) {
+						String multipleDelimiters[] = input.substring(3,end).split("]\\[");
+						for(String singleDelimiter:multipleDelimiters)
+							addDelimeter(singleDelimiter);
+						input = input.substring(end+1);
+					}
+					else {
+						String singleDelimiter = input.substring(3,end);
+						addDelimeter(singleDelimiter);
+						input = input.substring(end+1);
+					}
+					
 				}else {
 					addDelimeter(Character.toString(input.charAt(2)));
 					input = input.substring(3); // cleaning

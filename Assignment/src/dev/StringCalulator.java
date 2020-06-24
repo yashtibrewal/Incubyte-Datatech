@@ -3,12 +3,14 @@ package dev;
 import java.util.ArrayList;
 
 public class StringCalulator {
-	ArrayList<Character> delimiters;
+	ArrayList<String> delimiters;
 	ArrayList<Integer> negatives;
+	boolean hasNegatives = false;
 	static int calls = 0;
+	char specialCharacters[] = {'\\', '^', '$', '.', '|', '?', '*', '+', '(', ')', '[', '{'};
 	
 	public StringCalulator() {
-		delimiters = new ArrayList<Character>(2);
+		delimiters = new ArrayList<String>(2);
 		negatives = new ArrayList<Integer>(1);
 		addDefaultDelimeters();
 	}
@@ -18,61 +20,97 @@ public class StringCalulator {
 	}
 	
 	public void addDefaultDelimeters() {
-		delimiters.add(',');
-		delimiters.add('\n');
+		delimiters.add(",");
+		delimiters.add("\n");
 	}
 	
 	public boolean canBeAdded(String num) {
 		// numbers above 1000 cannot be added
 		if(Integer.parseInt(num)>1000)
 			return false;
-		if(Integer.parseInt(num)<0)
+		if(checkNegative(num, true)) {
 			return false;
+		}
 		return true;
 	}
 	
+	public void processDelimiterForMetaCharacters() {
+		for(int i=0;i<delimiters.size();i++) {
+			String delimiter = delimiters.get(i);
+			String processedDelimiter = "";
+			for(int j=0;j<delimiter.length();j++) {
+				char ch = delimiter.charAt(j);
+				if(isSpeacialCharacter(ch)) {
+					processedDelimiter+="\\"+ch;
+				}else {
+					processedDelimiter+=ch;
+				}
+			}
+			delimiters.set(i, processedDelimiter);
+		}
+	}
+	
+	boolean isSpeacialCharacter(char ch) {
+		for(char specialCharacter: specialCharacters) {
+			if(ch==specialCharacter)
+				return true;
+		}
+		return false;
+	}
+	
+	public String handleDelimiterChange(String input) {
+		
+		// handling delimiter change
+		
+		if (input.length() >= 3)
+			if (input.charAt(0) == '/' && input.charAt(1) == '/') {
+				if(input.charAt(2) == '[') {
+					int end = input.lastIndexOf(']');
+					String multiCharacterDelimiter = input.substring(3,end);
+					addDelimeter(multiCharacterDelimiter);
+					input = input.substring(end+1);
+				}else {
+					addDelimeter(Character.toString(input.charAt(2)));
+					input = input.substring(3); // cleaning
+				}
+			}
+		
+		
+		return input;
+	}
+	
+	public String makeDelimiterRegex() {
+		processDelimiterForMetaCharacters();
+		String delimiterRegex = "";
+		boolean first = true;
+		for(String delimiter: delimiters) {
+			if(first) {
+				delimiterRegex=delimiter;
+				first = false;
+			}
+			else
+				delimiterRegex+="|"+delimiter;
+		}
+		
+		return delimiterRegex;
+	}
+	
 	public int add(String input) throws Exception {
-		boolean hasNegatives = false;
 		int sum = 0;
 		calls++;
 		if (input.length() == 0) {
 			return 0;
 		}
-
-		// handling delimiter change
-		if (input.length() >= 3)
-			if (input.charAt(0) == '/' && input.charAt(1) == '/') {
-				addDelimeter(input.charAt(2));
-				input = input.substring(3); // removing the "//delimiter"
-			}
-
-		String num = ""; // to hold 1 number at a time
-		for (int i = 0; i < input.length(); i++) { // processing every character
-
-			char ch = input.charAt(i);
-			// checking for the delimiter
-			if (!isDelimeter(ch))
-				num += ch;
-			// logic to feed one number
-			if (isDelimeter(ch)) {
-				if (checkNegative(num, false)) {
-					if (!hasNegatives)
-						hasNegatives = true;
-					checkNegative(num, true);
-				}
-				if(canBeAdded(num))
-					sum += Integer.parseInt(num);
-				// handling negative numbers
-				num = "";
-			}
-
-			if (i == input.length() - 1) { // to add the last number
-				checkNegative(num, true);
-				if(canBeAdded(num))
-					sum += Integer.parseInt(num);
-			}
-
+		
+		input = handleDelimiterChange(input);
+		
+		String delimiterRegex = makeDelimiterRegex();
+		String numbers[] = input.split(delimiterRegex);
+		for(String number:numbers) {
+			if(canBeAdded(number))
+				sum+=Integer.parseInt(number);
 		}
+		
 		if (hasNegatives)
 			throw new Exception("negatives not allowed " + negatives);
 		return sum;
@@ -87,6 +125,8 @@ public class StringCalulator {
 	 */
 	public boolean checkNegative(String num, boolean add) {
 		if (Integer.parseInt(num) < 0) {
+			if(!hasNegatives)
+				hasNegatives = true;
 			if (add)
 				negatives.add(Integer.parseInt(num));
 			return true;
@@ -94,12 +134,12 @@ public class StringCalulator {
 		return false;
 	}
 
-	public boolean isDelimeter(char ch) {
-		return delimiters.contains(ch);
+	public boolean isDelimeter(String delimiter) {
+		return delimiters.contains(delimiter);
 	}
 
-	public void addDelimeter(char ch) {
-		delimiters.add(ch);
+	public void addDelimeter(String delimiter) {
+		delimiters.add(delimiter);
 	}
 
 }

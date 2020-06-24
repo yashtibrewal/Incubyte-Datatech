@@ -72,6 +72,10 @@ class StringCalculatorTest {
 		result = stringCalulatorObject.add("1000,1,1");
 		assertEquals(1002, result);
 		
+		stringCalulatorObject= new StringCalulator();
+		result = stringCalulatorObject.add("//[***]1***2***3");
+		assertEquals(6, result);
+		
 		System.out.println("add() function was called "+stringCalulatorObject.getCalledCount()+" times");
 		
 	}
@@ -79,9 +83,9 @@ class StringCalculatorTest {
 	@Test
 	final void testIsDelimeter() {
 		StringCalulator stringCalulatorObject = new StringCalulator();
-		assertEquals(true, stringCalulatorObject.isDelimeter('\n'));
-		assertEquals(true, stringCalulatorObject.isDelimeter(','));
-		assertEquals(false, stringCalulatorObject.isDelimeter(';'));
+		assertEquals(true, stringCalulatorObject.isDelimeter("\n"));
+		assertEquals(true, stringCalulatorObject.isDelimeter(","));
+		assertEquals(false, stringCalulatorObject.isDelimeter(";"));
 	}
 
 }

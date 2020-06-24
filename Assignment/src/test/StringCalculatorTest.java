@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import dev.StringCalulator;
 
@@ -68,7 +67,9 @@ class StringCalculatorTest {
 		expectedMessage = "negatives not allowed [-2, -3]";
 		actualMessage = exception.getMessage();
 		assertTrue(actualMessage.contains(expectedMessage));
-
+		
+		System.out.println("add() function was called "+stringCalulatorObject.getCalledCount()+" times");
+		
 	}
 
 	@Test

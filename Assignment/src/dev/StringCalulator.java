@@ -5,13 +5,18 @@ import java.util.ArrayList;
 public class StringCalulator {
 	ArrayList<Character> delimiters;
 	ArrayList<Integer> negatives;
-
+	static int calls = 0;
+	
 	public StringCalulator() {
 		delimiters = new ArrayList<Character>(2);
 		negatives = new ArrayList<Integer>(1);
 		addDefaultDelimeters();
 	}
 
+	public int getCalledCount() {
+		return calls;
+	}
+	
 	public void addDefaultDelimeters() {
 		delimiters.add(',');
 		delimiters.add('\n');
@@ -20,7 +25,7 @@ public class StringCalulator {
 	public int add(String input) throws Exception {
 		boolean hasNegatives = false;
 		int sum = 0;
-
+		calls++;
 		if (input.length() == 0) {
 			return 0;
 		}

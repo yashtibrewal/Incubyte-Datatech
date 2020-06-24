@@ -32,6 +32,15 @@ class StringCalculatorTest {
 		assertEquals(6, result);
 		result = stringCalulatorObject.add("2,45,1234,0,0,0,0,0,1,2,99");
 		assertEquals(1383, result);
+		result = stringCalulatorObject.add("1\n2,3\n99");
+		assertEquals(105, result);
 	}
-
+	
+	@Test
+	final void testIsDelimeter() {
+		StringCalulator stringCalulatorObject = new StringCalulator();
+		assertEquals(true, stringCalulatorObject.isDelimeter('\n'));
+		assertEquals(true, stringCalulatorObject.isDelimeter(','));
+	}
+	
 }

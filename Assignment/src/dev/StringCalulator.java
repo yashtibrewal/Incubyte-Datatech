@@ -1,9 +1,12 @@
 package dev;
 
 public class StringCalulator {
-	
+	char[] delimeters = {',','\n'};
+	public StringCalulator() {
+		// TODO Auto-generated constructor stub
+	}
 	public int add(String input) {
-		
+		System.out.print("debug point");
 		if(input.length()==0) {
 			return 0;
 		}
@@ -13,10 +16,10 @@ public class StringCalulator {
 		for(int i=0;i<input.length();i++) { // processing every character
 			
 			char ch = input.charAt(i);
-			if(ch != ',')
+			if(!isDelimeter(ch))  // checking for the delimeter
 				num+=ch;
 			//logic to feed one number
-			if(Character.compare(ch,',')==0) {
+			if(isDelimeter(ch)) {
 				sum+=Integer.parseInt(num);
 				num="";
 			}
@@ -28,6 +31,16 @@ public class StringCalulator {
 		}
 		
 		return sum;
+	}
+	
+	public boolean isDelimeter(char ch) {
+		
+		for(char delimeter:delimeters) {
+			if(ch==delimeter)
+				return true;
+		}
+		
+		return false;
 	}
 	
 }

@@ -30,6 +30,8 @@ class StringCalculatorTest {
 		assertEquals(3, result);
 		result = stringCalulatorObject.add("1,2,3");
 		assertEquals(6, result);
+		result = stringCalulatorObject.add("2,45,1234,0,0,0,0,0,1,2,99");
+		assertEquals(1383, result);
 	}
 
 }

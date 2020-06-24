@@ -6,15 +6,26 @@ public class StringCalulator {
 	ArrayList<String> delimiters;
 	ArrayList<Integer> negatives;
 	boolean hasNegatives = false;
+	/**
+	 * increments on every add() function call
+	 */
 	static int calls = 0;
 	char specialCharacters[] = {'\\', '^', '$', '.', '|', '?', '*', '+', '(', ')', '[', '{'};
 	
+	
+	/**
+	 * Constructor to initialize a class members and add default delimiters  
+	 */
 	public StringCalulator() {
 		delimiters = new ArrayList<String>(2);
 		negatives = new ArrayList<Integer>(1);
 		addDefaultDelimeters();
 	}
-
+	
+	
+	/**
+	 * @return returns the static member calls
+	 */
 	public int getCalledCount() {
 		return calls;
 	}
@@ -24,6 +35,11 @@ public class StringCalulator {
 		delimiters.add("\n");
 	}
 	
+	
+	/**
+	 * @param num: Takes in a string and checks if it can be added to the total sum
+	 * @return: returns true or false
+	 */
 	public boolean canBeAdded(String num) {
 		// numbers above 1000 cannot be added
 		if(Integer.parseInt(num)>1000)
@@ -34,6 +50,9 @@ public class StringCalulator {
 		return true;
 	}
 	
+	/**
+	 * Processes all the delimiters in the delimiter array for metacharacters
+	 */
 	public void processDelimiterForMetaCharacters() {
 		for(int i=0;i<delimiters.size();i++) {
 			String delimiter = delimiters.get(i);
@@ -50,6 +69,10 @@ public class StringCalulator {
 		}
 	}
 	
+	/**
+	 * @param ch: Takes in a character to check if it is a special/meta character
+	 * @return returns a boolean result
+	 */
 	boolean isSpeacialCharacter(char ch) {
 		for(char specialCharacter: specialCharacters) {
 			if(ch==specialCharacter)
@@ -58,6 +81,10 @@ public class StringCalulator {
 		return false;
 	}
 	
+	/**
+	 * @param input: provided by the user
+	 * @return returns a delimiter-less string for splitting and processing further
+	 */
 	public String handleDelimiterChange(String input) {
 		
 		// handling delimiter change
@@ -88,6 +115,9 @@ public class StringCalulator {
 		return input;
 	}
 	
+	/**
+	 * @return creates and returns a delimiter regex for splitting
+	 */
 	public String makeDelimiterRegex() {
 		processDelimiterForMetaCharacters();
 		String delimiterRegex = "";
@@ -104,6 +134,11 @@ public class StringCalulator {
 		return delimiterRegex;
 	}
 	
+	/**
+	 * @param input: String provided by the user
+	 * @return returns the sum of numbers in the string
+	 * @throws Exception throws a exception for negative numbers
+	 */
 	public int add(String input) throws Exception {
 		int sum = 0;
 		calls++;
@@ -143,10 +178,18 @@ public class StringCalulator {
 		return false;
 	}
 
+	/**
+	 * @param delimiter: checks if the string is a dlimiter or not 
+	 * @return boolean
+	 */
 	public boolean isDelimeter(String delimiter) {
 		return delimiters.contains(delimiter);
 	}
-
+	
+	
+	/**
+	 * @param delimiter: adds a string delimiter to the list of delimiters
+	 */
 	public void addDelimeter(String delimiter) {
 		delimiters.add(delimiter);
 	}
